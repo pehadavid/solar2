@@ -1,0 +1,51 @@
+<header class="main-header centered">
+  <h1>Welcome to Solar²</h1>
+  <small>the ultimate information about the sun at your location</small>
+
+</header>
+
+<section *ngIf="mainSolarInfo" class="data">
+  <div class="centered intro">Your current position (so nerdy !) : Latitude {{
+    mainSolarInfo.currentSolarInfo.Latitude.toFixed(2)}}, Longitude: {{
+    mainSolarInfo.currentSolarInfo.Longitude.toFixed(2)}}, generated at {{mainSolarInfo.currentSolarInfo.Date.local().format('DD/MM/YYYY hh:mm:ss')}}
+  </div>
+
+
+  <div class="main-data">
+      <div class="current-picto-container">
+        <i class="fas fa-moon" *ngIf="mainSolarInfo.isNight"></i>
+        <i class="fas fa-sun" *ngIf="!mainSolarInfo.isNight"></i>
+      </div>
+    <div class="text-values">
+      <p>Sunrise at : {{ mainSolarInfo.currentSolarInfo.Sunrise.local() | amDateFormat:'HH:mm'}}</p>
+      <p>Sunset at : {{ mainSolarInfo.currentSolarInfo.Sunset.local()  | amDateFormat:'HH:mm'}}</p>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="day-info centered">
+
+    <span>{{mainSolarInfo.currentSolarInfo.getHumanSolarTotal()  }} total minutes of Sun, </span>
+    <span>{{mainSolarInfo.getSign()}}</span> {{ mainSolarInfo.getDiff() | amDuration: 'seconds' }} since yesterday.
+    <span> Next Time you will have the same amount of sun : {{ mainSolarInfo.getNextSame()}}</span>
+    <span> {{mainSolarInfo.getDurationToNext().months()}} month(es) and {{ mainSolarInfo.getDurationToNext().days()}} days to go !</span>
+  </div>
+
+
+</section>
+<section class="no-data" *ngIf="!mainSolarInfo" class="centered">
+  no data :( please ensure that you have allowed us to get your current location !
+
+</section>
+<div class="chart-container">
+  <canvas id="chart" #canvas>
+
+  </canvas>
+</div>
+<footer class="centered">
+  solar². All right reserved.
+</footer>

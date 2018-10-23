@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~typeface-sunflower/index.css";
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+
+body {
+  font-family: 'Sunflower';
+  background-color: #2b394b;
+  color: whitesmoke;
+}

@@ -1,0 +1,56 @@
+:host {
+  display: grid;
+  grid-auto-flow: row;
+  width: 100vw;
+  margin: auto;
+}
+.main-header {
+  display: grid;
+  grid-auto-flow: row;
+}
+
+.main-data {
+  display: grid;
+  grid-auto-flow: column;
+}
+.current-picto-container {
+  font-size: 4em;
+  justify-self: center;
+  align-self: center;
+}
+.text-values {
+  align-self: center;
+  justify-self: center;
+}
+.intro  {
+  margin-bottom: 15px;
+}
+.centered {
+  text-align: center;
+}
+
+.current-visu {
+  display: grid;
+  grid-template-areas: "sunrise current sunset";
+  grid-template-columns: 1fr 3fr 1fr;
+
+}
+
+.sunrise {
+  grid-area: sunrise;
+}
+
+.sun-pos {
+  grid-area: current;
+}
+.sun-pos .picto-sun {
+  position: relative;
+  left: 50%;
+  display: block;
+
+
+}
+.sunset {
+  grid-area: sunset;
+  justify-self: right;
+}
