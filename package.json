@@ -26,6 +26,7 @@
     "core-js": "^2.5.4",
     "moment": "^2.22.2",
     "ngx-moment": "^3.1.0",
+    "parsejson": "0.0.3",
     "rxjs": "^6.0.0",
     "typeface-sunflower": "0.0.65",
     "zone.js": "~0.8.26"
