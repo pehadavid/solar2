@@ -14,14 +14,17 @@ export class SolarResolverService {
   currentDate: Moment;
 
   constructor() {
+    this.currentDate = moment();
     this.onMainSolarInfoUpdated = new EventEmitter<CompleteSolarModel>();
     if (navigator) {
       if ('geolocation' in navigator) {
         const self = this;
         self.brModel();
         setInterval(() => {
-          self.brModel();
-
+          const now = moment();
+          if (now.isAfter(self.currentDate, 'day')) {
+            self.brModel();
+          }
         }, 60000);
 
       }

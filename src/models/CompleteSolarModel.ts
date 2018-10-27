@@ -1,8 +1,7 @@
 import {SolarInfo} from './SolarInfo';
 import {Duration, Moment} from 'moment';
 import * as moment from 'moment';
-import {from} from 'rxjs';
-import {map, filter, first} from 'rxjs/operators';
+
 
 export class CompleteSolarModel {
   currentSolarInfo: SolarInfo;
