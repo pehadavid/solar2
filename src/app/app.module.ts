@@ -13,7 +13,7 @@ import { environment } from '../environments/environment';
     HomeComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({appId: 'solar2'}),
     MomentModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],

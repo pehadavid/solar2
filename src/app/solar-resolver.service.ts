@@ -1,8 +1,9 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {EventEmitter, Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {SolarInfo} from '../models/SolarInfo';
 import * as moment from 'moment';
 import {Moment} from 'moment';
 import {CompleteSolarModel} from '../models/CompleteSolarModel';
+import {isPlatformBrowser, isPlatformServer} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -13,22 +14,25 @@ export class SolarResolverService {
   onMainSolarInfoUpdated: EventEmitter<CompleteSolarModel>;
   currentDate: Moment;
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.currentDate = moment();
     this.onMainSolarInfoUpdated = new EventEmitter<CompleteSolarModel>();
-    if (navigator) {
-      if ('geolocation' in navigator) {
-        const self = this;
-        self.brModel();
-        setInterval(() => {
-          const now = moment();
-          if (now.isAfter(self.currentDate, 'day')) {
-            self.brModel();
-          }
-        }, 60000);
+    if (isPlatformBrowser(this.platformId)) {
+      if (navigator) {
+        if ('geolocation' in navigator) {
+          const self = this;
+          self.brModel();
+          setInterval(() => {
+            const now = moment();
+            if (now.isAfter(self.currentDate, 'day')) {
+              self.brModel();
+            }
+          }, 60000);
 
+        }
       }
     }
+
   }
 
   private brModel() {
