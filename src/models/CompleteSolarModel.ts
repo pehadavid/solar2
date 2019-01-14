@@ -59,11 +59,15 @@ export class CompleteSolarModel {
     return nextMoment.Date;
   }
 
+
+
   public getDurationToNext(): Duration {
     const next = this.getNextSame();
     return moment.duration(next.diff(this.currentSolarInfo.Date));
 
   }
+
+
 
 
 }

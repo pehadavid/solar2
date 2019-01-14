@@ -54,3 +54,8 @@
   grid-area: sunset;
   justify-self: right;
 }
+
+.chart-container {
+  width: 95vw;
+  margin: auto;
+}

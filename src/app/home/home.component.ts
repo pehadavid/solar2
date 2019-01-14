@@ -36,11 +36,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   updateChart(): void {
     const canvasContext = this.canvas.nativeElement.getContext('2d');
+    const lastTotal = -100;
+    const itemArray = Array.from(this.mainSolarInfo.relativeMap.values());
     const items = Array.from(this.mainSolarInfo.relativeMap.values())
       .filter(x => x.Date.isAfter(this.mainSolarInfo.currentSolarInfo.Date))
-      .map(x => {
+      .map((x, index) => {
+
+        const previous = itemArray[index + 1];
+        const diff = x.getSolarTotal().subtract(previous.getSolarTotal());
         const date = x.Date.format('MMM Do YYYY');
         const minutes: number = +x.getSolarTotal().asMinutes().toFixed(0);
+
         const h = x.getSolarTotal().hours();
         const color = h < 12 ? 'rgba(134, 136, 255, 1)' : 'rgba(213, 144, 125, 1)';
         const sunset = x.Sunset;
@@ -48,6 +54,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return {
           date,
           minutes,
+          diff,
           color,
           sunrise,
           sunset
@@ -60,7 +67,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         datasets: [
           {
             label: 'Minutes of sun',
-            data: items.map(x => x.minutes),
+            data: items.map(x => {
+              return x.minutes;
+            }),
             backgroundColor: items.map(x => x.color),
           },
           {
@@ -102,9 +111,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 mm = mm.hours(nbHours);
 
                 return mm.local().format('HH:mm z');
-              }
-              else {
-                return prelabel;
+              } else {
+                const mappedItem = items[item.index];
+                return `${prelabel} (${mappedItem.diff.minutes()}:${mappedItem.diff.seconds()})`;
+
               }
             }
           }
