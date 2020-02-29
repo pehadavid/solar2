@@ -8,13 +8,14 @@ export class CompleteSolarModel {
   relativeMap: Map<Moment, SolarInfo>;
   isNight: boolean;
   constructor(latitude: number, longitude: number) {
+    debugger;
     const currentDate = moment().utc();
     this.relativeMap = new Map<Moment, SolarInfo>();
     this.currentSolarInfo = new SolarInfo(latitude, longitude, currentDate);
     const nextYear = currentDate.clone().add(1, 'year');
     let iterationDate = currentDate.clone().add(-2, 'day');
     while (iterationDate.year() !== nextYear.year() || iterationDate.month() !== nextYear.month()
-    || iterationDate.date() !== currentDate.date()) {
+    || iterationDate.day() !== currentDate.day()) {
       iterationDate = iterationDate.clone().add(1, 'day');
       const dayInfo = new SolarInfo(latitude, longitude, iterationDate);
       this.relativeMap.set(iterationDate, dayInfo);

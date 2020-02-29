@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import {Moment} from 'moment';
 import {CompleteSolarModel} from '../models/CompleteSolarModel';
 import {isPlatformBrowser, isPlatformServer} from '@angular/common';
+import {interval, timer} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +21,14 @@ export class SolarResolverService {
     if (isPlatformBrowser(this.platformId)) {
       if (navigator) {
         if ('geolocation' in navigator) {
-          const self = this;
-          self.brModel();
-          setInterval(() => {
+          const itv = timer(1, 60000);
+          itv.subscribe( r => {
             const now = moment();
-            if (now.isAfter(self.currentDate, 'day')) {
-              self.brModel();
+            if (now.isAfter(this.currentDate, 'day') || r === 0) {
+              this.brModel();
             }
-          }, 60000);
+          });
+
 
         }
       }
