@@ -19,4 +19,4 @@ COPY --from=buildContainer /app/dist /app/dist
 EXPOSE 4000
 
 # Serve the app
-ENTRYPOINT ["node",  "dist/server"]
+ENTRYPOINT ["node",  "dist/solar2/server/main.js"]
