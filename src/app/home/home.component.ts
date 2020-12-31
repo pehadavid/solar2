@@ -4,6 +4,9 @@ import {CompleteSolarModel} from '../../models/CompleteSolarModel';
 import * as Chart from 'chart.js';
 import * as moment from 'moment';
 import {isPlatformBrowser} from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { ChartModel } from '../models/chart-model';
 
 
 @Component({
@@ -17,8 +20,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   mainSolarInfo: CompleteSolarModel;
   chart: any;
   now: moment.Moment;
+  chartItems: ChartModel[];
+  isBrowser: boolean;
 
-  constructor(private solarResolver: SolarResolverService, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private solarResolver: SolarResolverService, 
+    @Inject(PLATFORM_ID) private platformId: Object,
+    titleService: Title,
+    metaService: Meta,
+    private route: ActivatedRoute) {
+    this.isBrowser = isPlatformBrowser(platformId);  
+    titleService.setTitle("Mamasoleil.fr - heure de levé et couché de soleil");
+    metaService.updateTag({ name: 'description', content: `Heures de levé et de couché du soleil a votre position en temps réel !`});
     this.translateValue = 0;
     this.mainSolarInfo = null;
     moment.locale('fr');
@@ -31,6 +43,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.mainSolarInfo = this.route.snapshot.data.item as CompleteSolarModel;
   }
 
   ngAfterViewInit(): void {
@@ -40,8 +53,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   updateChart(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const canvas = document.querySelector('#chart') as HTMLCanvasElement;
-      const canvasContext = canvas.getContext('2d');
+      // const canvas = document.querySelector('#chart') as HTMLCanvasElement;
+      // const canvasContext = canvas.getContext('2d');
       const lastTotal = -100;
       const itemArray = Array.from(this.mainSolarInfo.relativeMap.values());
       const items = Array.from(this.mainSolarInfo.relativeMap.values())
@@ -64,70 +77,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
             color,
             sunrise,
             sunset
-          };
+          } as ChartModel;
         });
 
-      this.chart = new Chart(canvasContext, {
-        type: 'bar',
-        data: {
-          datasets: [
-            {
-              label: 'Minutes of sun',
-              data: items.map(x => {
-                return x.minutes;
-              }),
-              backgroundColor: items.map(x => x.color),
-            },
-            {
-              label: 'Sunrise',
-              data: items.map(x => {
-                return x.sunrise.hours() * 60 + x.sunrise.minutes();
-              }),
-
-              // Changes this dataset to become a line
-              type: 'line',
-              borderColor: 'yellow',
-              backgroundColor: 'transparent'
-            },
-            {
-              label: 'Sunset',
-              data: items.map(x => {
-                return x.sunset.hours() * 60 + x.sunset.minutes();
-              }),
-
-              // Changes this dataset to become a line
-              type: 'line',
-              borderColor: 'red',
-              backgroundColor: 'transparent'
-            }],
-          labels: items.map(x => x.date)
-        },
-        options: {
-          tooltips: {
-            callbacks: {
-              label: (item, data) => {
-                const rawValue = +data.datasets[item.datasetIndex].data[item.index];
-                // sunrise / sunset
-                const nbHours = Math.floor(rawValue / 60);
-                const nbMinutes = rawValue - (nbHours * 60);
-                const prelabel = `${nbHours}h${nbMinutes}`;
-                if (item.datasetIndex > 0) {
-                  let mm = moment.utc(item.xLabel + ' 00:00:00', 'MMM Do YYYY HH:mm:ss', true);
-                  mm = mm.minutes(nbMinutes);
-                  mm = mm.hours(nbHours);
-
-                  return mm.local().format('HH:mm z');
-                } else {
-                  const mappedItem = items[item.index];
-                  return `${prelabel} (${mappedItem.diff.minutes()}:${mappedItem.diff.seconds()})`;
-
-                }
-              }
-            }
-          }
-        }
-
-      });
+        this.chartItems = items;
+        return;
+    
     }
 
   }

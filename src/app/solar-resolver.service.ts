@@ -18,6 +18,7 @@ export class SolarResolverService {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.currentDate = moment();
     this.onMainSolarInfoUpdated = new EventEmitter<CompleteSolarModel>();
+    let done = false;
     if (isPlatformBrowser(this.platformId)) {
       if (navigator) {
         if ('geolocation' in navigator) {
@@ -25,6 +26,7 @@ export class SolarResolverService {
           itv.subscribe( r => {
             const now = moment();
             if (now.isAfter(this.currentDate, 'day') || r === 0) {
+              done = true;
               this.brModel();
             }
           });
@@ -33,6 +35,11 @@ export class SolarResolverService {
         }
       }
     }
+
+    if (!done){
+      this.ssrModel();
+    }
+   
 
   }
 
@@ -43,5 +50,12 @@ export class SolarResolverService {
       this.completeModel = new CompleteSolarModel(position.coords.latitude, position.coords.longitude);
       this.onMainSolarInfoUpdated.emit(this.completeModel);
     });
+  }
+
+  private ssrModel() {
+      const longitude = 48.846204;
+      const latitude = 2.349543;
+      this.completeModel = new CompleteSolarModel(latitude, longitude);
+      this.onMainSolarInfoUpdated.emit(this.completeModel);
   }
 }

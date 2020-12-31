@@ -27,11 +27,9 @@
   no data :( please ensure that you have allowed us to get your current location !
 
 </section>
-<div class="chart-container">
-  <canvas id="chart" #canvas>
 
-  </canvas>
-</div>
-<footer class="centered">
-  solar². All right reserved.
-</footer>
+<app-duration [items]="chartItems" *ngIf="!!chartItems && isBrowser" class="chart-container container"></app-duration>
+
+<app-sunrise  [items]="chartItems" *ngIf="!!chartItems && isBrowser" class="chart-container container"></app-sunrise>
+
+<app-footer ></app-footer>
