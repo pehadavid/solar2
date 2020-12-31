@@ -16,10 +16,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   translateValue: number;
   mainSolarInfo: CompleteSolarModel;
   chart: any;
+  now: moment.Moment;
 
   constructor(private solarResolver: SolarResolverService, @Inject(PLATFORM_ID) private platformId: Object) {
     this.translateValue = 0;
     this.mainSolarInfo = null;
+    moment.locale('fr');
+    this.now = moment();
     this.solarResolver.onMainSolarInfoUpdated.subscribe(r => {
 
       this.mainSolarInfo = r;

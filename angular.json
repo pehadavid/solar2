@@ -24,7 +24,7 @@
               "src/manifest.json"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -134,5 +134,10 @@
       }
     }
   },
-  "defaultProject": "solar2"
+  "defaultProject": "solar2",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }
