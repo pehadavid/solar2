@@ -14,8 +14,9 @@ export class CompleteSolarModel {
     this.currentSolarInfo = new SolarInfo(latitude, longitude, currentDate);
     const nextYear = currentDate.clone().add(1, 'year');
     let iterationDate = currentDate.clone().add(-2, 'day');
-    while (iterationDate.year() !== nextYear.year() || iterationDate.month() !== nextYear.month()
-    || iterationDate.day() !== currentDate.day()) {
+
+
+    while (!iterationDate.isSame(nextYear, 'day')) {
       iterationDate = iterationDate.clone().add(1, 'day');
       const dayInfo = new SolarInfo(latitude, longitude, iterationDate);
       this.relativeMap.set(iterationDate, dayInfo);
