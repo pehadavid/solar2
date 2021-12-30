@@ -23,13 +23,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   chartItems: ChartModel[];
   isBrowser: boolean;
 
-  constructor(private solarResolver: SolarResolverService, 
-    @Inject(PLATFORM_ID) private platformId: Object,
-    titleService: Title,
-    metaService: Meta,
-    private route: ActivatedRoute) {
-    this.isBrowser = isPlatformBrowser(platformId);  
-    titleService.setTitle("Mamasoleil.fr - heure de levé et couché de soleil");
+  constructor(private solarResolver: SolarResolverService,
+              @Inject(PLATFORM_ID) private platformId: Object,
+              titleService: Title,
+              metaService: Meta,
+              private route: ActivatedRoute) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    titleService.setTitle('Mamasoleil.fr - heure de levé et couché de soleil');
     metaService.updateTag({ name: 'description', content: `Heures de levé et de couché du soleil a votre position en temps réel !`});
     this.translateValue = 0;
     this.mainSolarInfo = null;
@@ -64,15 +64,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
           const previous = itemArray[index + 1];
           const diff = x.getSolarTotal().subtract(previous.getSolarTotal());
           const date = x.Date.format('MMM Do YYYY');
-          const minutes: number = +x.getSolarTotal().asMinutes().toFixed(0);
-
+          const solarTotal = x.getSolarTotal();
+          const minutes: number = +solarTotal.asMinutes().toFixed(0);
+          const seconds: number = +solarTotal.asSeconds().toFixed(0);
           const h = x.getSolarTotal().hours();
           const color = h < 12 ? 'rgba(134, 136, 255, 1)' : 'rgba(213, 144, 125, 1)';
           const sunset = x.Sunset;
           const sunrise = x.Sunrise;
           return {
             date,
-            minutes,
+            seconds,
             diff,
             color,
             sunrise,
@@ -80,9 +81,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
           } as ChartModel;
         });
 
-        this.chartItems = items;
-        return;
-    
+      this.chartItems = items;
+      return;
+
     }
 
   }
