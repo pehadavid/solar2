@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.solarResolver.onMainSolarInfoUpdated.subscribe(r => {
 
       this.mainSolarInfo = r;
-       this.updateChart();
+      this.updateChart();
     });
   }
 

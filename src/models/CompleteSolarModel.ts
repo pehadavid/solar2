@@ -8,7 +8,7 @@ export class CompleteSolarModel {
   relativeMap: Map<Moment, SolarInfo>;
   isNight: boolean;
   constructor(latitude: number, longitude: number) {
-    debugger;
+
     const currentDate = moment().utc();
     this.relativeMap = new Map<Moment, SolarInfo>();
     this.currentSolarInfo = new SolarInfo(latitude, longitude, currentDate);
