@@ -30,7 +30,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@nguniversal/express-engine": "^11.0.1",
     "chart.js": "^2.7.3",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "moment": "^2.22.2",
     "ngx-moment": "^3.2.0",
     "node-geocoder": "^3.27.0",
